@@ -1,0 +1,17 @@
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambientes Virtuais (caso você use no futuro)
+venv/
+.venv/
+env/
+
+# Configurações de Banco de Dados (Segurança!)
+config_banco.py
+.env
+
+# Configurações do VS Code
+.vscode/
