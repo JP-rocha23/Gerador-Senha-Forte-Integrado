@@ -36,6 +36,7 @@ Atualmente sou estudante de **Ciência da Computação na UERJ** (prev. 2027) e 
 ### 📚 O que estou aprendendo agora:
 <p align="left">
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" alt="csharp" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg" alt="dotnet" width="35" height="35"/>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/haskell/haskell-original.svg" alt="haskell" width="40" height="40"/>
 </p>
 
