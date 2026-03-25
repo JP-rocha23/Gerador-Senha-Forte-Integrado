@@ -12,8 +12,8 @@ O projeto foi desenvolvido enquanto eu revisava conceitos de Python e explorava 
 ## 🚀 Funcionalidades
 - [x] Geração de senhas aleatórias fortes (letras, números e símbolos).
 - [x] Escolha personalizada do tamanho da senha.
-- [ ] Integração com MySQL para salvar senhas por serviço (Em desenvolvimento).
-- [ ] Interface de usuário via terminal (CLI) organizada.
+- [x] Integração com MySQL para salvar senhas por serviço.
+- [x] Interface de usuário via terminal (CLI) organizada.
 
 ## 🏗️ Arquitetura do Projeto (MVC)
 O projeto está organizado da seguinte forma:
@@ -54,3 +54,31 @@ Atualmente sou estudante de **Ciência da Computação na UERJ** (prev. 2027) e 
 > ```bash
 > pip install mysql-connector-python
 > ```
+
+2. Script no Sql:
+
+Para que o projeto funcione corretamente, é necessário executar o seguinte script no seu ambiente MySQL (Workbench ou Terminal):
+
+```sql
+CREATE DATABASE IF NOT EXISTS db_gerador_senhas;
+USE db_gerador_senhas;
+
+CREATE TABLE IF NOT EXISTS tb_senhas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_servico VARCHAR(100) NOT NULL,
+    senha_gerada VARCHAR(255) NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+3. Altere os campos User e Password em Model/Model.py
+
+```
+self.config = {
+    'host': 'localhost',
+    'user': 'seu_usuario',      # Geralmente 'root'
+    'password': 'sua_senha',    # A senha que você definiu no MySQL Workbench
+    'database': 'db_gerador_senhas'
+}
+```
+
