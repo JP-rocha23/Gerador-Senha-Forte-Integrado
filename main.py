@@ -1,7 +1,13 @@
-from Vision.Vision import exibir_menu, solicitar_tamanho_senha, exibir_senha_gerada, mensagem_erro
+from Vision.Vision import exibir_menu, solicitar_tamanho_senha, exibir_senha_gerada,solicitar_salvamento_senha, local_de_salvamento,exibir_lista_senhas, mensagem_erro
 from Controller.Controller import gerarSenhaForte
+from Model.Model import PasswordModel
+import string
 
 def iniciar():
+
+    db = PasswordModel()
+    db.testar_conexao()
+
     while True:
         resposta = exibir_menu()
 
@@ -11,15 +17,26 @@ def iniciar():
                     print('\n\t --- Gerar Nova Senha ---')
                     tamanhosenha = solicitar_tamanho_senha()
                     novasenhaforte = gerarSenhaForte(tamanhosenha)
-                    exibir_senha_gerada(novasenhaforte)
-                except ValueError:
-                    mensagem_erro("Por favor, digite um número inteiro válido.\n")
+                    exibir_senha_gerada(novasenhaforte) #Senha gerada
+
+                    salvarsenha = solicitar_salvamento_senha()
+                    localdesalvamento = local_de_salvamento(salvarsenha)
+
+                    if localdesalvamento and localdesalvamento.strip(): #Se a resposta for não retorna uma string vazia, que retorna falsa com o strip()
+                        db.inserir_senha(localdesalvamento, novasenhaforte)
+                    else:
+                        pass
+
+                except ValueError as e:
+                    mensagem_erro(str(e))
 
             case 2:
                 print('\n\t --- Visualizar senhas ---')
+                tabela = db.visualizar_senhas()
+                exibir_lista_senhas(tabela)
 
             case 3:
-                print('\n\t --- Editar Senhas ---')
+                print('\n\t --- Editar Senhas ---') #TODO
 
             case 4:
                 print("Bye Bye...")
