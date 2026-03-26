@@ -1,4 +1,4 @@
-from Vision.Vision import exibir_menu, solicitar_tamanho_senha, exibir_senha_gerada,solicitar_salvamento_senha, local_de_salvamento,exibir_lista_senhas, mensagem_erro
+from Vision.Vision import exibir_menu, solicitar_tamanho_senha, exibir_senha_gerada,solicitar_salvamento_senha, local_de_salvamento,exibir_lista_senhas, exibir_menu_edicao, solicitar_nome_antigo, solicitar_novo_nome, mensagem_erro
 from Controller.Controller import gerarSenhaForte
 from Model.Model import PasswordModel
 import string
@@ -6,6 +6,7 @@ import string
 def iniciar():
 
     db = PasswordModel()
+    db.criar_tabela()
     db.testar_conexao()
 
     while True:
@@ -36,8 +37,26 @@ def iniciar():
                 exibir_lista_senhas(tabela)
 
             case 3:
-                print('\n\t --- Editar Senhas ---') #TODO
+                print('\n\t --- Editar Serviços/Senhas ---')
+                while True:
+                    novaresposta = exibir_menu_edicao()
 
+                    match novaresposta:
+                        case 1: # editar nome
+                            nome_antigo = solicitar_nome_antigo()
+                            novo_nome = solicitar_novo_nome()
+                            db.editar_nome(nome_antigo, novo_nome)
+
+                        case 2: # editar senha
+                            nome = solicitar_nome_antigo()
+                            db.editar_senha(nome) #gera senha automaticamente
+
+                        case 3:
+                            break
+
+                        case _:
+                            mensagem_erro("Opcao inválida, tente novamente.")
+            
             case 4:
                 print("Bye Bye...")
                 break #Encerra o programa

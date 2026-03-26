@@ -4,11 +4,15 @@ def exibir_menu():
     print('O que você deseja fazer?')
     print('[1] Gerar nova senha forte')
     print('[2] Visualizar senhas')
-    print('[3] Editar senha')
+    print('[3] Editar serviços/senhas')
     print('[4] Sair')
-    return int(input("---> "))
+    resposta = input("---> ")
 
+    if resposta.isdigit():
+        return int(resposta)
+    return 0
 
+# -----------------------------> Gerar nova senha forte
 def solicitar_tamanho_senha():
     return int(input('Digite o tamanho da senha desejada:'))
 
@@ -32,7 +36,7 @@ def local_de_salvamento(resposta : str):
     else:
         mensagem_erro('Resposta inválida, tente novamente.')
 
-
+# ----------------------------> Visualizar senha
 def exibir_lista_senhas(lista_senhas):
     if not lista_senhas:
         print("\n[AVISO] Nenhuma senha cadastrada ainda.")
@@ -44,7 +48,25 @@ def exibir_lista_senhas(lista_senhas):
     for s in lista_senhas:
         print(f"{s['id']:<4} | {s['nome_servico']:<20} | {s['senha_gerada']:<20}")
 
+# -------------------------------> Editar senha
+def exibir_menu_edicao():
+    print('O que você deseja editar?')
+    print('[1] Editar Nome')
+    print('[2] Editar Senha')
+    print('[3] Voltar')
+    resposta = input("---> ")
 
+    if resposta.isdigit():
+        return int(resposta)
+    return 0
+
+def solicitar_nome_antigo():
+    return str(input('Qual o nome do servico que você deseja alterar? ')).strip().lower()
+
+def solicitar_novo_nome():
+        return str(input('Qual nome que você deseja colocar? ')).strip().lower()
+
+# --------------------------------> Erro
 def mensagem_erro(msg):
     print(f'[ERRO] {msg}')
     

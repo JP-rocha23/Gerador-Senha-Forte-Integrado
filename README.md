@@ -1,84 +1,59 @@
-# 🔐 Gerador de Senhas Fortes Integrado
+# 🔐 Gerador de Senhas Fortes (MVC + MySQL)
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
-![Architecture](https://img.shields.io/badge/Architecture-MVC-green?style=for-the-badge)
-
-## 📌 Sobre o Projeto
-Este é um projeto de estudo focado na criação de um **Gerador de Senhas Seguras** com persistência em banco de dados. O objetivo principal foi aplicar o padrão de arquitetura **MVC (Model-View-Controller)** para separar as responsabilidades do sistema, garantindo um código limpo e escalonável.
-
-O projeto foi desenvolvido enquanto eu revisava conceitos de Python e explorava a integração com bancos de dados relacionais (MySQL).
+Este é um projeto desenvolvido em **Python** que utiliza o padrão de arquitetura **MVC (Model-View-Controller)** para gerenciar e gerar senhas seguras, armazenando-as de forma organizada em um banco de dados **MySQL**.
 
 ## 🚀 Funcionalidades
-- [x] Geração de senhas aleatórias fortes (letras, números e símbolos).
-- [x] Escolha personalizada do tamanho da senha.
-- [x] Integração com MySQL para salvar senhas por serviço.
-- [x] Interface de usuário via terminal (CLI) organizada.
 
-## 🏗️ Arquitetura do Projeto (MVC)
-O projeto está organizado da seguinte forma:
+* **Auto-Setup de Banco de Dados:** O sistema verifica e cria o banco de dados (`db_gerador_senhas`) e a tabela (`tb_senhas`) automaticamente na primeira execução.
+* **Geração Inteligente:** Cria senhas complexas com base em um tamanho padrão configurável.
+* **Gestão de Credenciais:** Permite adicionar, visualizar e editar (nome ou senha) os serviços cadastrados.
+* **Segurança:** Implementação de queries parametrizadas para evitar ataques de *SQL Injection*.
+* **Tratamento de Dados:** Padronização de strings (`strip` e `lower`) para garantir buscas precisas no banco.
 
-- **Model**: Gerencia a conexão com o MySQL e a persistência dos dados.
-- **Vision**: Responsável por toda a interação com o usuário (inputs e displays).
-- **Controller**: Contém a lógica de negócio (algoritmo de geração de senha segura usando `secrets`).
-- **Main**: Ponto de entrada que orquestra a comunicação entre as camadas.
+## 🛠️ Pré-requisitos
 
-## 🛠️ Tecnologias e Ferramentas
-- **Linguagem Principal:** Python 3.12+
-- **Banco de Dados:** MySQL
-- **IDE:** VS Code (com extensões Live Server e suporte a Python)
+Antes de rodar o projeto, você precisa ter:
 
----
+1.  **Python 3.12+** instalado.
+2.  **MySQL Server** em execução.
+3.  A biblioteca de conexão instalada via terminal:
+    ```bash
+    pip install mysql-connector-python
+    ```
 
-## 👨‍💻 Sobre mim
-Atualmente sou estudante de **Ciência da Computação na UERJ** (prev. 2027) e estagiário de tecnologia no **TJRJ**. Faço parte do **Grupo de Foguetes do Rio de Janeiro (GFRJ)**, onde aplico tecnologia em projetos de extensão universitária.
+## ⚙️ Configuração Local
 
-### 📚 O que estou aprendendo agora:
-<p align="left">
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" alt="csharp" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/dotnetcore/dotnetcore-original.svg" alt="dotnet" width="35" height="35"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/haskell/haskell-original.svg" alt="haskell" width="40" height="40"/>
-</p>
+Para que o programa se conecte ao seu MySQL, você deve ajustar as credenciais no arquivo `Model.py`:
 
----
+1.  Abra `Model/Model.py`.
+2.  No método `__init__`, localize o dicionário `self.config`.
+3.  Insira seu usuário e senha do MySQL:
 
-## 🔧 Como Rodar o Projeto
-1. Clone o repositório:
-   ```bash
-   git clone [https://github.com/JP-rocha23/Gerador-Senha-Forte-Integrado.git](https://github.com/JP-rocha23/Gerador-Senha-Forte-Integrado.git)
-
----
-> [!IMPORTANT]
-> **OBS:** Para que o sistema funcione corretamente, é necessário ter o Python instalado e o driver de conexão com o banco de dados. 
-> Execute o comando abaixo no seu terminal antes de rodar o `main.py`:
-> ```bash
-> pip install mysql-connector-python
-> ```
-
-2. Script no Sql:
-
-Para que o projeto funcione corretamente, é necessário executar o seguinte script no seu ambiente MySQL (Workbench ou Terminal):
-
-```sql
-CREATE DATABASE IF NOT EXISTS db_gerador_senhas;
-USE db_gerador_senhas;
-
-CREATE TABLE IF NOT EXISTS tb_senhas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome_servico VARCHAR(100) NOT NULL,
-    senha_gerada VARCHAR(255) NOT NULL,
-    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-3. Altere os campos User e Password em Model/Model.py
-
-```
+```python
 self.config = {
-    'host': 'localhost',
-    'user': 'seu_usuario',      # Geralmente 'root'
-    'password': 'sua_senha',    # A senha que você definiu no MySQL Workbench
-    'database': 'db_gerador_senhas'
+    'host' : 'localhost',
+    'user' : 'seu_usuario',      # Ex: 'root'
+    'password' : 'sua_senha',    # Sua senha do MySQL
+    'database' : 'db_gerador_senhas'
 }
 ```
 
+## 📂 Estrutura do Código (Arquitetura MVC)
+
+O projeto está organizado seguindo o padrão **Model-View-Controller**, garantindo a separação de responsabilidades e facilitando a manutenção:
+
+* **`Model/PasswordModel.py`**: Camada de persistência. Contém a classe responsável por toda a comunicação com o banco de dados **MySQL**. Realiza operações de `INSERT`, `SELECT` e `UPDATE`, além de gerenciar a criação automática da estrutura do banco.
+* **`Controller/`**: Camada lógica. Responsável por importar e executar a função `gerarSenhaForte`, que processa as regras de negócio para a criação de strings aleatórias seguras.
+* **`View/`**: Camada de interface. Contém as funções de entrada (`input`) e saída (`print`), gerenciando os menus interativos e a formatação das tabelas de visualização no terminal.
+* **`main.py`**: O ponto de entrada (entry point) da aplicação. Orquestra a inicialização do banco de dados e o loop principal do sistema.
+
+---
+
+## 👨‍💻 Créditos e Desenvolvimento
+
+Este projeto foi desenvolvido como parte do portfólio de estudos em **Engenharia de Software** e **Banco de Dados**.
+
+* **Desenvolvedor:** [João Pedro](https://github.com/JP-rocha23)
+* **Tecnologias:** Python 3.12, MySQL Server, MySQL Connector.
+
+---
