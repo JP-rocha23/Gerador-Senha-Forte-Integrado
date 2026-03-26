@@ -7,7 +7,7 @@ class PasswordModel:
         self.config = {
             'host' : 'localhost',
             'user' : 'root',
-            'password' : 'SUA SENHA AQUI',
+            'password' : 'jp2004',
             'database' : 'db_gerador_senhas'
         }
 
